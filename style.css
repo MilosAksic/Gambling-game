@@ -1,0 +1,78 @@
+body, html {
+    margin:0;
+    padding: 0;
+    height: 100vh;
+}
+.main {
+    width: 70%;
+    border: 1px solid black;
+    height: 100%;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 50% 50%;
+    grid-template-rows: 30% 25% 15% 30%;
+    grid-template-areas: 
+            "s3 s1"
+            "s4 s1"
+            "s4 s2"
+            "s4 ."
+}
+.section1,.section2,.section3,.section4{
+    margin: 5px;
+
+}
+.section1 {
+    grid-area: s1;
+    background-color: yellow;
+    display: grid;
+    grid-template-columns: auto auto auto auto auto auto;
+
+}
+.section1 .number {
+    border: 2px solid black;
+    border-radius: 50%;
+    font-size: 25px;
+    margin:5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.section1 .number:hover {
+    cursor: pointer;
+}
+.section2 {
+    grid-area: s2;
+    background-color: blue;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.section3 {
+    grid-area: s3;
+    background-color: green;
+    
+
+}
+.section3 h3 {
+    text-align: center;
+    font-size: 25px;
+    margin: 15px;
+    padding: 0;
+}
+.section4 {
+    grid-area: s4;
+    background-color: gray;
+
+}
+.section4 h4 {
+    text-align: center;
+    font-size: 25px;
+    margin: 15px;
+    padding: 0;
+}
+.tiket {
+    width: 98%;
+    height: 17%;
+    margin: 3px;
+    background-color: blue;
+}
