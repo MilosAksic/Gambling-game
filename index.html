@@ -9,7 +9,7 @@
 </head>
 <body>
     <div class="main">
-        <div class="section1">
+        <div class="section1" id="section1">
             <div class="number">1</div>
             <div class="number">2</div> 
             <div class="number">3</div> 
@@ -44,6 +44,8 @@
         <div class="section2">
             <h3 id="errorMsg">Neka poruka</h3>
             <div id="dugmici">
+                     <span id="ulogTekst">Ulog: </span>
+                    <input type="number" id="inputBox" autocomplete="off">
                     <button id="addTicket">DODAJ TIKET</button>
                     <button id="odigraj">ODIGRAJ</button>
             </div>
@@ -54,21 +56,46 @@
             <h3>Izvuceni brojevi</h3>
             <div id="izvuceniBrojevi">
                 <div class="prviDeo">
-                        <div class="winningNumber">1</div>
-                        <div class="winningNumber">2</div> 
-                        <div class="winningNumber">3</div> 
-                        <div class="winningNumber">4</div> 
-                        <div class="winningNumber">5</div> 
-                        <div class="winningNumber">6</div> 
+                    <div class="wrapper">
+                            <div class="winningNumber"></div>
+                    </div>
+                    <div class="wrapper">
+                            <div class="winningNumber"></div>
+                    </div>
+                    <div class="wrapper">
+                            <div class="winningNumber"></div>
+                    </div>
+                    <div class="wrapper">
+                            <div class="winningNumber"></div>
+                    </div>
+                    <div class="wrapper">
+                            <div class="winningNumber"></div>
+                    </div>
+                    <div class="wrapper">
+                            <div class="winningNumber"></div>
+                    </div>
+
                 </div>
                     
                 <div class="drugiDeo">
-                        <div class="winningNumber">7</div> 
-                        <div class="winningNumber">8</div> 
-                        <div class="winningNumber">9</div> 
-                        <div class="winningNumber">10</div> 
-                        <div class="winningNumber">11</div> 
-                        <div class="winningNumber">12</div> 
+                        <div class="wrapper">
+                                <div class="winningNumber"></div>
+                        </div>
+                        <div class="wrapper">
+                                <div class="winningNumber"></div>
+                        </div>
+                        <div class="wrapper">
+                                <div class="winningNumber"></div>
+                        </div>
+                        <div class="wrapper">
+                                <div class="winningNumber"></div>
+                        </div>
+                        <div class="wrapper">
+                                <div class="winningNumber"></div>
+                        </div>
+                        <div class="wrapper">
+                                <div class="winningNumber"></div>
+                        </div>
                 </div>
                     
             </div>
@@ -77,64 +104,150 @@
             <h4>Tvoji tiketi</h4>
             <div class="tiket" id="tiket1">
                 <div class="brojevi">
-                    <div class="ticketNumber1">/</div> 
-                    <div class="ticketNumber1">/</div> 
-                    <div class="ticketNumber1">/</div> 
-                    <div class="ticketNumber1">/</div> 
-                    <div class="ticketNumber1">/</div> 
+                    <div class="wrapper1">
+                        <div class="ticketNumber1"></div> 
+                    </div>
+                    <div class="wrapper1">
+                        <div class="ticketNumber1"></div> 
+                    </div>
+                    <div class="wrapper1">
+                        <div class="ticketNumber1"></div> 
+                    </div>
+                    <div class="wrapper1">
+                        <div class="ticketNumber1"></div> 
+                    </div>
+                    <div class="wrapper1">
+                        <div class="ticketNumber1"></div> 
+                    </div>
+                     
                 </div>
-                <div id="ticketStatus1">
-                    DOBIJEN
+                <div class="newWrapper">
+                    <div  class="ulogDiv">
+                       Ulog: <span id="ulog1Value"  class="ulozi"> 100 </span> RSD
+                    </div>
+                    <div id="ticketStatus1">
+                         DOBIJEN
+                    </div>
                 </div>
+                
             </div>
             <div class="tiket" id="tiket2">
                     <div class="brojevi">
-                            <div class="ticketNumber2">/</div> 
-                            <div class="ticketNumber2">/</div> 
-                            <div class="ticketNumber2">/</div> 
-                            <div class="ticketNumber2">/</div> 
-                            <div class="ticketNumber2">/</div> 
+                            <div class="wrapper1">
+                                    <div class="ticketNumber2"></div> 
+                                </div>
+                                <div class="wrapper1">
+                                    <div class="ticketNumber2"></div> 
+                                </div>
+                                <div class="wrapper1">
+                                    <div class="ticketNumber2"></div> 
+                                </div>
+                                <div class="wrapper1">
+                                    <div class="ticketNumber2"></div> 
+                                </div>
+                                <div class="wrapper1">
+                                    <div class="ticketNumber2"></div> 
+                                </div> 
                         </div>
-                        <div id="ticketStatus2">
-                            DOBIJEN
-                        </div>
+                        <div class="newWrapper">
+                                <div  class="ulogDiv">
+                                   Ulog: <span id="ulog2Value"  class="ulozi"> 100 </span> RSD
+                                </div>
+                                <div id="ticketStatus2">
+                                     DOBIJEN
+                                </div>
+                            </div>
             </div>
             <div class="tiket" id="tiket3">
                     <div class="brojevi">
-                            <div class="ticketNumber3">/</div> 
-                            <div class="ticketNumber3">/</div> 
-                            <div class="ticketNumber3">/</div> 
-                            <div class="ticketNumber3">/</div> 
-                            <div class="ticketNumber3">/</div> 
+                            <div class="wrapper1">
+                                    <div class="ticketNumber3"></div> 
+                                </div>
+                                <div class="wrapper1">
+                                    <div class="ticketNumber3"></div> 
+                                </div>
+                                <div class="wrapper1">
+                                    <div class="ticketNumber3"></div> 
+                                </div>
+                                <div class="wrapper1">
+                                    <div class="ticketNumber3"></div> 
+                                </div>
+                                <div class="wrapper1">
+                                    <div class="ticketNumber3"></div> 
+                                </div>
                         </div>
-                        <div id="ticketStatus3">
-                            DOBIJEN
-                        </div>
+                        <div class="newWrapper">
+                                <div  class="ulogDiv">
+                                   Ulog: <span id="ulog3Value"  class="ulozi"> 100 </span> RSD
+                                </div>
+                                <div id="ticketStatus3">
+                                     DOBIJEN
+                                </div>
+                            </div>
             </div>
             <div class="tiket" id="tiket4">
                     <div class="brojevi">
-                            <div class="ticketNumber4">/</div> 
-                            <div class="ticketNumber4">/</div> 
-                            <div class="ticketNumber4">/</div> 
-                            <div class="ticketNumber4">/</div> 
-                            <div class="ticketNumber4">/</div> 
+                            <div class="wrapper1">
+                                    <div class="ticketNumber4"></div> 
+                                </div>
+                                <div class="wrapper1">
+                                    <div class="ticketNumber4"></div> 
+                                </div>
+                                <div class="wrapper1">
+                                    <div class="ticketNumber4"></div> 
+                                </div>
+                                <div class="wrapper1">
+                                    <div class="ticketNumber4"></div> 
+                                </div>
+                                <div class="wrapper1">
+                                    <div class="ticketNumber4"></div> 
+                                </div>
                         </div>
-                        <div id="ticketStatus4">
-                            DOBIJEN
-                        </div>
+                        <div class="newWrapper">
+                                <div class="ulogDiv">
+                                   Ulog: <span id="ulog4Value"  class="ulozi"> 100 </span> RSD
+                                </div>
+                                <div id="ticketStatus4">
+                                     DOBIJEN
+                                </div>
+                            </div>
             </div>
             <div class="tiket" id="tiket5">
                     <div class="brojevi">
-                            <div class="ticketNumber5">/</div> 
-                            <div class="ticketNumber5">/</div> 
-                            <div class="ticketNumber5">/</div> 
-                            <div class="ticketNumber5">/</div> 
-                            <div class="ticketNumber5">/</div> 
+                            <div class="wrapper1">
+                                    <div class="ticketNumber5"></div> 
+                                </div>
+                                <div class="wrapper1">
+                                    <div class="ticketNumber5"></div> 
+                                </div>
+                                <div class="wrapper1">
+                                    <div class="ticketNumber5"></div> 
+                                </div>
+                                <div class="wrapper1">
+                                    <div class="ticketNumber5"></div> 
+                                </div>
+                                <div class="wrapper1">
+                                    <div class="ticketNumber5"></div> 
+                                </div>
                         </div>
-                        <div id="ticketStatus5">
-                            DOBIJEN
-                        </div>
+                        <div class="newWrapper">
+                                <div class="ulogDiv">
+                                   Ulog: <span id="ulog5Value"  class="ulozi"> 100 </span> RSD
+                                </div>
+                                <div id="ticketStatus5">
+                                     DOBIJEN
+                                </div>
+                            </div>
             </div>
+        </div>
+        <div class="section5">
+            <h4>Stanje: <span id="balance"></span> Dinara</h4>
+            <p>Kvote: </p>
+            <p>1 pogodjeni broj : Ulog X 4 </p>
+            <p>2 pogodjena broja : Ulog X 7 </p>
+            <p>3 pogodjena broja : Ulog X 15 </p>
+            <p>4 pogodjena broja : Ulog X 30 </p>
+            <p>5 pogodjena broja : Ulog X 50 </p>
         </div>    
     </div>
     <script
