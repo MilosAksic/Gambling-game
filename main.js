@@ -6,7 +6,7 @@ const errorMsg = d('errorMsg')
 const odigraj = d('odigraj')
 const balance = d('balance')
 const ulog = d('inputBox');
-
+// spanovi za uloge
 const ulog1 = d('ulog1Value');
 const ulog2 = d('ulog2Value');
 const ulog3 = d('ulog3Value');
@@ -14,6 +14,7 @@ const ulog4 = d('ulog4Value');
 const ulog5 = d('ulog5Value');
 
 let dobitniNiz= [];
+
 const winningNumbers = document.querySelectorAll('.winningNumber');
 const ulogDivovi = document.querySelectorAll('.ulogDiv');
 const ticketNumber1 = document.querySelectorAll('.ticketNumber1');
@@ -37,24 +38,31 @@ let bet3 = 0
 let bet4 = 0
 let bet5 = 0
 
-
-
 balance.innerHTML = currentMoney;
 
 var arraysMatch = function (arr1, arr2) {
 
-	// Check if the arrays are the same length
 	if (arr1.length !== arr2.length) return false;
 
-	// Check if all items exist and are in the same order
 	for (let i = 0; i < arr1.length; i++) {
 		if (arr1[i] !== arr2[i]) return false;
 	}
 
-	// Otherwise, return true
 	return true;
 
 };
+function resetnoMoney (){
+    odigraj.style.display = "block"
+    ulog.style.display = "none"
+    dodajTiket.style.display = "none"
+    d('ulogTekst').style.display = "none"
+}
+
+function invalidBet(errormsg){
+    errorMsg.innerHTML= errormsg
+    errorMsg.style.display = "block";
+    izabraniBrojevi  = []
+}
 
 function provera (nizProvera,dobitniNiz) {
     let brojPogodjenih = 0;
@@ -65,16 +73,26 @@ function provera (nizProvera,dobitniNiz) {
             }
         }
     }
+    if (nizProvera.length == 0) {
+        return false
+    }
     if (brojPogodjenih == nizProvera.length) {
         return true
     } else {
+        
         return false
     }
+}
+function tiketStatus(ID , className, display , msg) {
+    d(`tiket${ID}`).classList.add(className);
+    d(`ticketStatus${ID}`).style.display = display
+    d(`ticketStatus${ID}`).innerHTML = msg
 }
 
 function reset(){
     d('ulogTekst').style.display="block"
     odigraj.disabled = false;
+    redniBroj = 0;
     d('section1').disabled = false;
     for (let i = 0 ; i<numbers.length;i++) {
         numbers[i].disabled = false;
@@ -83,26 +101,15 @@ function reset(){
     ulog.value = "";
     dodajTiket.style.display="block"
     odigraj.style.display="none"
-    d('ticketStatus1').style.display="none"
-    d('ticketStatus2').style.display="none"
-    d('ticketStatus3').style.display="none"
-    d('ticketStatus4').style.display="none"
-    d('ticketStatus5').style.display="none"
+ // mozda ovo moze u for petlju 
+    for (let i =1 ; i<6 ; i++) {
+        d(`ticketStatus${i}`).style.display="none"
+    }
 
-    d('tiket1').classList.remove('dobitniTiket');
-    d('tiket1').classList.remove('izgubljeniTiket');
-
-    d('tiket2').classList.remove('dobitniTiket');
-    d('tiket2').classList.remove('izgubljeniTiket');
-
-    d('tiket3').classList.remove('dobitniTiket');
-    d('tiket3').classList.remove('izgubljeniTiket');
-
-    d('tiket4').classList.remove('dobitniTiket');
-    d('tiket4').classList.remove('izgubljeniTiket');
-
-    d('tiket5').classList.remove('dobitniTiket');
-    d('tiket5').classList.remove('izgubljeniTiket');
+    for (let i =1 ; i<6 ; i++) {
+        d(`tiket${i}`).classList.remove('dobitniTiket');
+        d(`tiket${i}`).classList.remove('izgubljeniTiket'); 
+    }
     ticketCounter = 1
     izabraniBrojevi  = []
     tiket1  = []
@@ -114,12 +121,10 @@ function reset(){
 
     for (let i = 0; i < 12; i++) {
         let add = true;
-        let randomNumber = Math.floor(Math.random() * 30) + 1;
-    
+        let randomNumber = Math.floor(Math.random() * 30) + 1;  
         for (let y = 0; y < 12; y++) {
             if (dobitniNiz[y] == randomNumber) {
-                add = false;
-                
+                add = false;             
             }
         }
         if (add) {
@@ -128,7 +133,6 @@ function reset(){
             i--;
         }
     }
-
 
     for  (let i = 0 ; i < 5 ; i++) {
 
@@ -146,11 +150,11 @@ function reset(){
     for  (let i = 0 ; i < winningNumbers.length ; i++) {
         winningNumbers[i].style.display="none"
     }
+    for (let i = 0; i < winningNumbers.length; i++) {
+        winningNumbers[i].innerHTML = dobitniNiz[i]
+    }
 
 }
-
-
-
 
 // creating array of wining numbers
 for (let i = 0; i < 12; i++) {
@@ -203,20 +207,17 @@ for(let i = 0 ; i < numbers.length ; i++) {
 dodajTiket.addEventListener('click', ()=>{
     let classCounter = 0;
     // dodavanje u niz izabranih brojeva
-
     for(let i = 0 ; i < numbers.length ; i++) {
         if (numbers[i].classList.contains("boja")){  
         izabraniBrojevi.push (i+1);
-        classCounter++            
-         
+        classCounter++                    
         }
     }
-    console.log(classCounter);
-    console.log(izabraniBrojevi);
 
     // limiteri koji zabranjuju dodavanje tketa
     if (classCounter == 0) {
         errorMsg.innerHTML='Izaberite neki broj';
+        errorMsg.style.display = "block"
         return;
     }
     //uklanjanje klase
@@ -228,25 +229,22 @@ dodajTiket.addEventListener('click', ()=>{
     switch(ticketCounter) {
         case 1:        
             if (ulog.value == 0) {
-                errorMsg.innerHTML= "Unesite ulog"
-                errorMsg.style.display = "block";
-                izabraniBrojevi  = []
+                invalidBet('Unesite ulog')
                 break;
-            } else if (ulog.value > currentMoney) {
-                errorMsg.innerHTML= "Nemate toliko para"
-                errorMsg.style.display = "block";
-                izabraniBrojevi  = []
+            }
+            else if (ulog.value > currentMoney) {
+                invalidBet('Nemate toliko kredita')
                 break;   
             }
-           
+          
              else if (ulog.value < 0) {
-                errorMsg.innerHTML= "Nisu dozvoljeni negativni ulozi"
-                errorMsg.style.display = "block";
-                izabraniBrojevi  = []
+                invalidBet('Nisu dozvoljeni negativni ulozi')
                 break;   
             }
             else {
-                
+                if (ulog.value == currentMoney){
+                    resetnoMoney()
+                }
                 for  (let i = 0 ; i < izabraniBrojevi.length ; i++) {
                     tiket1.push (izabraniBrojevi[i])
                 }
@@ -258,10 +256,8 @@ dodajTiket.addEventListener('click', ()=>{
                 bet1 = ulog.value;
                 currentMoney = currentMoney - ulog.value
                 balance.innerHTML = currentMoney;
-
                 ulog1.innerHTML = bet1;
                 ulogDivovi[0].style.display = "block"
-
                 ulog.value == 0
                 ticketCounter++
                 izabraniBrojevi=[]
@@ -270,24 +266,23 @@ dodajTiket.addEventListener('click', ()=>{
                 
         break;
         case 2:
-                if (ulog.value == 0) {
-                    errorMsg.innerHTML= "Unesite ulog"
-                    errorMsg.style.display = "block";
-                    izabraniBrojevi  = []
-                    break;
-                } else if (ulog.value > currentMoney) {
-                    errorMsg.innerHTML= "Nemate toliko para"
-                    errorMsg.style.display = "block";
-                    izabraniBrojevi  = []
-                    break;   
-                }
-                
-                 else if (ulog.value < 0) {
-                    errorMsg.innerHTML= "Nisu dozvoljeni negativni ulozi"
-                    errorMsg.style.display = "block";
-                    izabraniBrojevi  = []
-                    break;   
-                } else {
+            if (ulog.value == 0) {
+                invalidBet('Unesite ulog')
+                break;
+            }
+            else if (ulog.value > currentMoney) {
+                invalidBet('Nemate toliko kredita')
+                break;   
+            }
+          
+             else if (ulog.value < 0) {
+                invalidBet('Nisu dozvoljeni negativni ulozi')
+                break;   
+            }
+                 else {
+                    if (ulog.value == currentMoney){
+                        resetnoMoney()
+                    }
                     
                     for  (let i = 0 ; i < izabraniBrojevi.length ; i++) {
                         tiket2.push (izabraniBrojevi[i])
@@ -306,10 +301,8 @@ dodajTiket.addEventListener('click', ()=>{
                         bet2 = ulog.value;
                         currentMoney = currentMoney - ulog.value; 
                         balance.innerHTML = currentMoney;
-
                         ulog2.innerHTML = bet2;
                         ulogDivovi[1].style.display = "block"
-
                         ulog.value == 0
                         ticketCounter++
                         izabraniBrojevi=[]
@@ -322,29 +315,23 @@ dodajTiket.addEventListener('click', ()=>{
         break;
         case 3:
                
-                for (let j = 0 ; j < numbers.length ; j++) {
-                    if (numbers[j].classList.contains("boja")){      
-                        classCounter++                    } 
-                }   
-
                 if (ulog.value == 0) {
-                    errorMsg.innerHTML= "Unesite ulog"
-                    errorMsg.style.display = "block";
-                    izabraniBrojevi  = []
+                    invalidBet('Unesite ulog')
                     break;
-                } else if (ulog.value > currentMoney) {
-                    errorMsg.innerHTML= "Nemate toliko para"
-                    errorMsg.style.display = "block";
+                }
+                else if (ulog.value > currentMoney) {
+                    invalidBet('Nemate toliko kredita')
                     break;   
                 }
-                
+              
                  else if (ulog.value < 0) {
-                    errorMsg.innerHTML= "Nisu dozvoljeni negativni ulozi"
-                    errorMsg.style.display = "block";
-                    izabraniBrojevi  = []
+                    invalidBet('Nisu dozvoljeni negativni ulozi')
                     break;   
                 }
                 else {
+                    if (ulog.value == currentMoney){
+                        resetnoMoney()
+                    }
                 
                 for  (let i = 0 ; i < izabraniBrojevi.length ; i++) {
                     tiket3.push (izabraniBrojevi[i])
@@ -363,10 +350,8 @@ dodajTiket.addEventListener('click', ()=>{
                 bet3 = ulog.value;
                 currentMoney = currentMoney - ulog.value; 
                 balance.innerHTML = currentMoney;
-
                 ulog3.innerHTML = bet3;
                 ulogDivovi[2].style.display = "block"
-
                 ulog.value == 0
                 ticketCounter++
                 izabraniBrojevi=[]
@@ -374,27 +359,23 @@ dodajTiket.addEventListener('click', ()=>{
         }
         break;
         case 4:
-
-                if (ulog.value == 0) {
-                    errorMsg.innerHTML= "Unesite ulog"
-                    errorMsg.style.display = "block";
-                    izabraniBrojevi  = []
-                    break;
-                    
-                } else if (ulog.value > currentMoney) {
-                    errorMsg.innerHTML= "Nemate toliko para"
-                    errorMsg.style.display = "block";
-                    izabraniBrojevi  = []
-                    break;   
-                }
-                
-                 else if (ulog.value < 0) {
-                    errorMsg.innerHTML= "Nisu dozvoljeni negativni ulozi"
-                    errorMsg.style.display = "block";
-                    izabraniBrojevi  = []
-                    break;   
-                }
+            if (ulog.value == 0) {
+                invalidBet('Unesite ulog')
+                break;
+            }
+            else if (ulog.value > currentMoney) {
+                invalidBet('Nemate toliko kredita')
+                break;   
+            }
+          
+             else if (ulog.value < 0) {
+                invalidBet('Nisu dozvoljeni negativni ulozi')
+                break;   
+            }
                 else {
+                    if (ulog.value == currentMoney){
+                        resetnoMoney()
+                    }
               
                 for  (let i = 0 ; i < izabraniBrojevi.length ; i++) {
                     tiket4.push (izabraniBrojevi[i])
@@ -413,11 +394,8 @@ dodajTiket.addEventListener('click', ()=>{
                 bet4 = ulog.value;
                 currentMoney = currentMoney - ulog.value; 
                 balance.innerHTML = currentMoney;
-
                 ulog4.innerHTML = bet4;
                 ulogDivovi[3].style.display = "block"
-
-
                 ulog.value == 0
                 ticketCounter++
                 izabraniBrojevi=[]
@@ -425,27 +403,24 @@ dodajTiket.addEventListener('click', ()=>{
             }
         break;
         case 5:
- 
-                if (ulog.value == 0) {
-                    errorMsg.innerHTML= "Unesite ulog"
-                    errorMsg.style.display = "block";
-                    izabraniBrojevi  = []
-                    break;
-                } else if (ulog.value > currentMoney) {
-                    errorMsg.innerHTML= "Nemate toliko para"
-                    errorMsg.style.display = "block";
-                    izabraniBrojevi  = []
-                    break;   
-                }
-                
-                 else if (ulog.value < 0) {
-                    errorMsg.innerHTML= "Nisu dozvoljeni negativni ulozi"
-                    errorMsg.style.display = "block";
-                    izabraniBrojevi  = []
-                    break;   
-                }else {
-
-                
+            if (ulog.value == 0) {
+                invalidBet('Unesite ulog')
+                break;
+            }
+            else if (ulog.value > currentMoney) {
+                invalidBet('Nemate toliko kredita')
+                break;   
+            }
+          
+             else if (ulog.value < 0) {
+                invalidBet('Nisu dozvoljeni negativni ulozi')
+                break;   
+            }
+                else {
+                    if (ulog.value == currentMoney){
+                        resetnoMoney()
+                    }
+   
                 for  (let i = 0 ; i < izabraniBrojevi.length ; i++) {
                     tiket5.push (izabraniBrojevi[i])
                 }
@@ -467,11 +442,8 @@ dodajTiket.addEventListener('click', ()=>{
                 bet5 = ulog.value;
                 currentMoney = currentMoney - ulog.value; 
                 balance.innerHTML = currentMoney;
-
                 ulog5.innerHTML = bet5;
                 ulogDivovi[4].style.display = "block"
-
-
                 ulog.value == 0
                 ticketCounter++
                 izabraniBrojevi=[]
@@ -500,27 +472,30 @@ odigraj.addEventListener ('click' , ()=> {
         if (redniBroj == 11) {
             redniBroj++;
             
-            setTimeout(reset,4000)
+            setTimeout(reset,6000)
            
              if (provera(tiket1,dobitniNiz)) {
-               d('tiket1').classList.add('dobitniTiket');
-               d('ticketStatus1').style.display="flex"
-               d('ticketStatus1').innerHTML = "DOBITNI"
+                tiketStatus(1,'dobitniTiket','flex' , 'DOBITNI')
                switch (tiket1.length) {
                    case 1:
-                        currentMoney = currentMoney + ( bet1 * 4) 
+                        currentMoney = currentMoney + ( bet1 * 4)
+                        balance.innerHTML = currentMoney;
                     break;
                     case 2:
                             currentMoney = currentMoney + ( bet2 * 7) 
+                            balance.innerHTML = currentMoney;
                     break;
                     case 3:
                             currentMoney = currentMoney + ( bet3 * 15) 
+                            balance.innerHTML = currentMoney;
                     break;
                     case 4:
                             currentMoney = currentMoney + ( bet4 * 30) 
+                            balance.innerHTML = currentMoney;
                     break;
                     case 5:
                             currentMoney = currentMoney + ( bet5 * 50) 
+                            balance.innerHTML = currentMoney;
                     break; 
                     default:
                     return; 
@@ -528,15 +503,11 @@ odigraj.addEventListener ('click' , ()=> {
                }
                 
              } else {
-                d('tiket1').classList.add('izgubljeniTiket');
-                d('ticketStatus1').style.display="flex"
-                d('ticketStatus1').innerHTML = "IZGUBLJENI" 
+                tiketStatus(1, 'izgubljeniTiket', 'none' , 'IZGUBLJENI')
              }
 
              if (provera(tiket2,dobitniNiz)) {
-                d('tiket2').classList.add('dobitniTiket');
-                d('ticketStatus2').style.display="flex"
-                d('ticketStatus2').innerHTML = "DOBITNI"
+                tiketStatus(2, 'dobitniTiket', 'flex' , 'DOBITNI')
                 switch (tiket2.length) {
                     case 1:
                          currentMoney = currentMoney + ( bet1 * 4) 
@@ -563,15 +534,11 @@ odigraj.addEventListener ('click' , ()=> {
  
                 } 
               } else {
-                 d('tiket2').classList.add('izgubljeniTiket');
-                 d('ticketStatus2').style.display="flex"
-                 d('ticketStatus2').innerHTML = "IZGUBLJENI" 
+                tiketStatus(2 , 'izgubljeniTiket', 'none' , 'IZGUBLJENI')
               }
 
               if (provera(tiket3,dobitniNiz)) {
-                d('tiket3').classList.add('dobitniTiket');
-                d('ticketStatus3').style.display="flex"
-                d('ticketStatus3').innerHTML = "DOBITNI" 
+                tiketStatus(3, 'dobitniTiket', 'flex' , 'DOBITNI') 
                 switch (tiket3.length) {
                     case 1:
                          currentMoney = currentMoney + ( bet1 * 4) 
@@ -598,15 +565,12 @@ odigraj.addEventListener ('click' , ()=> {
  
                 }
               } else {
-                 d('tiket3').classList.add('izgubljeniTiket');
-                 d('ticketStatus3').style.display="flex"
-                 d('ticketStatus3').innerHTML = "IZGUBLJENI" 
+                tiketStatus(3, 'izgubljeniTiket', 'none' , 'IZGUBLJENI')
               }
 
               if (provera(tiket4,dobitniNiz)) {
-                d('tiket4').classList.add('dobitniTiket');
-                d('ticketStatus4').style.display="flex"
-                d('ticketStatus4').innerHTML = "DOBITNI"
+                tiketStatus(4 , 'dobitniTiket', 'flex' , 'DOBITNI')
+                
                 switch (tiket4.length) {
                     case 1:
                          currentMoney = currentMoney + ( bet1 * 4) 
@@ -633,15 +597,11 @@ odigraj.addEventListener ('click' , ()=> {
  
                 } 
               } else {
-                 d('tiket4').classList.add('izgubljeniTiket');
-                 d('ticketStatus4').style.display="flex"
-                 d('ticketStatus4').innerHTML = "IZGUBLJENI" 
+                tiketStatus(4, 'izgubljeniTiket', 'none' , 'IZGUBLJENI')
               }
 
               if (provera(tiket5,dobitniNiz)) {
-                d('tiket5').classList.add('dobitniTiket');
-                d('ticketStatus5').style.display="flex"
-                d('ticketStatus5').innerHTML = "DOBITNI"
+                tiketStatus(5, 'dobitniTiket', 'flex' , 'DOBITNI')
                 switch (tiket5.length) {
                     case 1:
                          currentMoney = currentMoney + ( bet1 * 4) 
@@ -668,9 +628,7 @@ odigraj.addEventListener ('click' , ()=> {
  
                 } 
               } else {
-                 d('tiket5').classList.add('izgubljeniTiket');
-                 d('ticketStatus5').style.display="flex"
-                 d('ticketStatus5').innerHTML = "IZGUBLJENI" 
+                tiketStatus(5, 'izgubljeniTiket', 'none' , 'IZGUBLJENI')
               }
             return
         }
