@@ -56,11 +56,16 @@ function resetnoMoney (){
     ulog.style.display = "none"
     dodajTiket.style.display = "none"
     d('ulogTekst').style.display = "none"
+
+    ulog.value = "";
 }
 
 function invalidBet(errormsg){
     errorMsg.innerHTML= errormsg
     errorMsg.style.display = "block";
+
+    ulog.value = "";
+
     izabraniBrojevi  = []
 }
 
@@ -206,6 +211,7 @@ for(let i = 0 ; i < numbers.length ; i++) {
 
 dodajTiket.addEventListener('click', ()=>{
     let classCounter = 0;
+    
     // dodavanje u niz izabranih brojeva
     for(let i = 0 ; i < numbers.length ; i++) {
         if (numbers[i].classList.contains("boja")){  
@@ -258,7 +264,7 @@ dodajTiket.addEventListener('click', ()=>{
                 balance.innerHTML = currentMoney;
                 ulog1.innerHTML = bet1;
                 ulogDivovi[0].style.display = "block"
-                ulog.value == 0
+                ulog.value = ""
                 ticketCounter++
                 izabraniBrojevi=[]
                 
@@ -303,7 +309,7 @@ dodajTiket.addEventListener('click', ()=>{
                         balance.innerHTML = currentMoney;
                         ulog2.innerHTML = bet2;
                         ulogDivovi[1].style.display = "block"
-                        ulog.value == 0
+                        ulog.value = ""
                         ticketCounter++
                         izabraniBrojevi=[]
                         
@@ -352,7 +358,7 @@ dodajTiket.addEventListener('click', ()=>{
                 balance.innerHTML = currentMoney;
                 ulog3.innerHTML = bet3;
                 ulogDivovi[2].style.display = "block"
-                ulog.value == 0
+                ulog.value = ""
                 ticketCounter++
                 izabraniBrojevi=[]
             }
@@ -396,7 +402,7 @@ dodajTiket.addEventListener('click', ()=>{
                 balance.innerHTML = currentMoney;
                 ulog4.innerHTML = bet4;
                 ulogDivovi[3].style.display = "block"
-                ulog.value == 0
+                ulog.value = ""
                 ticketCounter++
                 izabraniBrojevi=[]
             }
@@ -444,7 +450,7 @@ dodajTiket.addEventListener('click', ()=>{
                 balance.innerHTML = currentMoney;
                 ulog5.innerHTML = bet5;
                 ulogDivovi[4].style.display = "block"
-                ulog.value == 0
+                ulog.value = ""
                 ticketCounter++
                 izabraniBrojevi=[]
             }
@@ -472,7 +478,7 @@ odigraj.addEventListener ('click' , ()=> {
         if (redniBroj == 11) {
             redniBroj++;
             
-            setTimeout(reset,6000)
+            setTimeout(reset,8000)
            
              if (provera(tiket1,dobitniNiz)) {
                 tiketStatus(1,'dobitniTiket','flex' , 'DOBITNI')
@@ -503,7 +509,7 @@ odigraj.addEventListener ('click' , ()=> {
                }
                 
              } else {
-                tiketStatus(1, 'izgubljeniTiket', 'none' , 'IZGUBLJENI')
+                tiketStatus(1, 'izgubljeniTiket', 'flex' , 'IZGUBLJENI')
              }
 
              if (provera(tiket2,dobitniNiz)) {
@@ -534,7 +540,7 @@ odigraj.addEventListener ('click' , ()=> {
  
                 } 
               } else {
-                tiketStatus(2 , 'izgubljeniTiket', 'none' , 'IZGUBLJENI')
+                tiketStatus(2 , 'izgubljeniTiket', 'flex' , 'IZGUBLJENI')
               }
 
               if (provera(tiket3,dobitniNiz)) {
@@ -565,7 +571,7 @@ odigraj.addEventListener ('click' , ()=> {
  
                 }
               } else {
-                tiketStatus(3, 'izgubljeniTiket', 'none' , 'IZGUBLJENI')
+                tiketStatus(3, 'izgubljeniTiket', 'flex' , 'IZGUBLJENI')
               }
 
               if (provera(tiket4,dobitniNiz)) {
@@ -597,7 +603,7 @@ odigraj.addEventListener ('click' , ()=> {
  
                 } 
               } else {
-                tiketStatus(4, 'izgubljeniTiket', 'none' , 'IZGUBLJENI')
+                tiketStatus(4, 'izgubljeniTiket', 'flex' , 'IZGUBLJENI')
               }
 
               if (provera(tiket5,dobitniNiz)) {
@@ -628,7 +634,7 @@ odigraj.addEventListener ('click' , ()=> {
  
                 } 
               } else {
-                tiketStatus(5, 'izgubljeniTiket', 'none' , 'IZGUBLJENI')
+                tiketStatus(5, 'izgubljeniTiket', 'flex' , 'IZGUBLJENI')
               }
             return
         }
