@@ -217,6 +217,9 @@ body, html {
 #addTicket {
     margin-left: 10px;
 }
+#tiket1, #tiket2, #tiket3,#tiket4,#tiket5 {
+    display: none;
+}
 
 .boja {
 
