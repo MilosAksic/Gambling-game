@@ -120,6 +120,9 @@ body, html {
 }
 .section3 {
     grid-area: s3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     
 }
 #ticketStatus1,
