@@ -121,6 +121,7 @@ body, html {
 .section3 {
     grid-area: s3;
     display: flex;
+    flex-direction : column;
     justify-content: center;
     align-items: center;
     
