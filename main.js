@@ -490,7 +490,7 @@ odigraj.addEventListener ('click' , ()=> {
         if (redniBroj == 11) {
             redniBroj++;
             
-            setTimeout(reset,8000)
+            setTimeout(reset,6000)
            
              if (provera(tiket1,dobitniNiz)) {
                 tiketStatus(1,'dobitniTiket','flex' , 'DOBITNI')
