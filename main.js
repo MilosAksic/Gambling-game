@@ -6,6 +6,7 @@ const errorMsg = d('errorMsg')
 const odigraj = d('odigraj')
 const balance = d('balance')
 const ulog = d('inputBox');
+const dodajKredit = d('dodaj');
 // spanovi za uloge
 const ulog1 = d('ulog1Value');
 const ulog2 = d('ulog2Value');
@@ -31,33 +32,25 @@ let tiket3  = [];
 let tiket4  = [];
 let tiket5  = [];
 
-let currentMoney = 0;
-let bet1 = 0
-let bet2 = 0
-let bet3 = 0
-let bet4 = 0
-let bet5 = 0
+let currentMoney = 5000;
+let bet1 = 0;
+let bet2 = 0;
+let bet3 = 0;
+let bet4 = 0;
+let bet5 = 0;
 
 balance.innerHTML = currentMoney;
 
+// provera da li se nizovi podudaraju
+
 var arraysMatch = function (arr1, arr2) {
-
 	if (arr1.length !== arr2.length) return false;
-
 	for (let i = 0; i < arr1.length; i++) {
 		if (arr1[i] !== arr2[i]) return false;
 	}
-
 	return true;
 
 };
-// function resetnoMoney (){
-//     odigraj.style.display = "block"
-//     ulog.style.display = "none"
-//     dodajTiket.style.display = "none"
-//     d('ulogTekst').style.display = "none"
-    
-// }
 
 function numberEventlistener(){
     for(let i = 0 ; i < numbers.length ; i++) { 
@@ -65,9 +58,7 @@ function numberEventlistener(){
             let classCounter = 0;
             for (let j = 0 ; j < numbers.length ; j++) {        
                 if (numbers[j].classList.contains("boja")){   
-                    classCounter++            
-                   console.log(classCounter);
-                   
+                    classCounter++                                            
                }
          
             if (classCounter == 5 ) {
@@ -83,15 +74,14 @@ function numberEventlistener(){
     }
 }
 
-
 function invalidBet(errormsg){
     errorMsg.innerHTML= errormsg
     errorMsg.style.display = "block";
-
     ulog.value = "";
-
-    izabraniBrojevi  = []
+    izabraniBrojevi  = [];
 }
+
+//provera dobitnog tiketa
 
 function provera (nizProvera,dobitniNiz) {
     let brojPogodjenih = 0;
@@ -114,31 +104,31 @@ function provera (nizProvera,dobitniNiz) {
 }
 function tiketStatus(ID , className, display , msg) {
     d(`tiket${ID}`).classList.add(className);
-    d(`ticketStatus${ID}`).style.display = display
-    d(`ticketStatus${ID}`).innerHTML = msg
+    d(`ticketStatus${ID}`).style.display = display;
+    d(`ticketStatus${ID}`).innerHTML = msg;
 }
-
+//reset funkcija
 function reset(){
     d('ulogTekst').style.display="block"
     odigraj.disabled = false;
+    dodajKredit.disabled =false;
     redniBroj = 0;
     d('section1').disabled = false;
     for (let i = 0 ; i<numbers.length;i++) {
         numbers[i].disabled = false;
     }
     ulog.style.display="block"
-    ulog.value = "";
-    dodajTiket.style.display="block"
+    ulog.value = "";   
+     dodajTiket.style.display="block"
+
     odigraj.style.display="none"
- // mozda ovo moze u for petlju 
+
     for (let i =1 ; i<6 ; i++) {
         d(`ticketStatus${i}`).style.display="none"
     }
     for (let i =1 ; i<6 ; i++) {
         d(`tiket${i}`).style.display="none"
-    }
-    
-
+    }  
     for (let i =1 ; i<6 ; i++) {
         d(`tiket${i}`).classList.remove('dobitniTiket');
         d(`tiket${i}`).classList.remove('izgubljeniTiket'); 
@@ -168,15 +158,12 @@ function reset(){
     }
 
     for  (let i = 0 ; i < 5 ; i++) {
-
         ticketNumber1[i].style.display = "none";
         ticketNumber2[i].style.display = "none";
         ticketNumber3[i].style.display = "none";
         ticketNumber4[i].style.display = "none";
-        ticketNumber5[i].style.display = "none";
-                          
+        ticketNumber5[i].style.display = "none";                        
     }
-
     for  (let i = 0 ; i < ulogDivovi.length ; i++) {
         ulogDivovi[i].style.display="none"
     }
@@ -188,7 +175,6 @@ function reset(){
     }
 
 }
-
 // creating array of wining numbers
 for (let i = 0; i < 12; i++) {
     let add = true;
@@ -206,14 +192,17 @@ for (let i = 0; i < 12; i++) {
         i--;
     }
 }
-
 //adding winning numbers into DOM
-
 for (let i = 0; i < winningNumbers.length; i++) {
     winningNumbers[i].innerHTML = dobitniNiz[i]
 }
 // event listeners for 1-30 numbers and number limiters
 numberEventlistener();
+dodajKredit.addEventListener ('click', ()=>{   
+    currentMoney = currentMoney +1000;
+    balance.innerHTML = currentMoney;
+
+})
 
 //dodavanje tiketa 
 
@@ -227,7 +216,6 @@ dodajTiket.addEventListener('click', ()=>{
         classCounter++                    
         }
     }
-
     // limiteri koji zabranjuju dodavanje tketa
     if (classCounter == 0) {
         errorMsg.innerHTML='Izaberite neki broj';
@@ -246,8 +234,17 @@ dodajTiket.addEventListener('click', ()=>{
                 invalidBet('Nisu dozvoljeni negativni ulozi')
                 break;   
             }
+            else if (ulog.value > currentMoney) {
+                invalidBet('Nemate dovoljno kredita')
+                break;  
+            }
+
             else {
-                
+                if (ulog.value == 0 && currentMoney > 0) {
+                    invalidBet('Stavite ulog')
+                    break;   
+                }
+
                 for  (let i = 0 ; i < izabraniBrojevi.length ; i++) {
                     tiket1.push (izabraniBrojevi[i])
                 }
@@ -258,14 +255,19 @@ dodajTiket.addEventListener('click', ()=>{
                 
                 d('tiket1').style.display = "flex"
                 errorMsg.style.display = "none";
-                bet1 = ulog.value;
-                currentMoney = currentMoney - ulog.value
+                bet1 =  parseInt (ulog.value);
+                currentMoney = currentMoney - bet1
                 balance.innerHTML = currentMoney;
                 ulog1.innerHTML = bet1;
                 ulogDivovi[0].style.display = "block"
                 ulog.value = ""
                 ticketCounter++
                 izabraniBrojevi=[]
+
+                if (ulog.value == currentMoney) {
+                    errorMsg.innerHTML= "Dodajte jos kredita kako bi ste nastavili igru"
+                    errorMsg.style.display = "block";
+                }
                 
             }
                 
@@ -275,7 +277,15 @@ dodajTiket.addEventListener('click', ()=>{
                 invalidBet('Nisu dozvoljeni negativni ulozi')
                 break;   
             }
+            else if (ulog.value > currentMoney) {
+                invalidBet('Nemate dovoljno kredita')
+                break;  
+            }
                  else {
+                    if (ulog.value == 0 && currentMoney > 0) {
+                        invalidBet('Stavite ulog')
+                        break;   
+                    }
                     
                     
                     for  (let i = 0 ; i < izabraniBrojevi.length ; i++) {
@@ -283,6 +293,7 @@ dodajTiket.addEventListener('click', ()=>{
                     }
                     if (arraysMatch(tiket1,tiket2)){
                         errorMsg.innerHTML = "tiket vec postoji"
+                        errorMsg.style.display = "block";
                         tiket2= [];
                         izabraniBrojevi = []
                         return;
@@ -293,14 +304,18 @@ dodajTiket.addEventListener('click', ()=>{
                         }
                         d('tiket2').style.display = "flex"
                         errorMsg.style.display = "none";
-                        bet2 = ulog.value;
-                        currentMoney = currentMoney - ulog.value; 
+                        bet2 = parseInt (ulog.value);
+                        currentMoney = currentMoney - bet2; 
                         balance.innerHTML = currentMoney;
                         ulog2.innerHTML = bet2;
                         ulogDivovi[1].style.display = "block"
                         ulog.value = ""
                         ticketCounter++
                         izabraniBrojevi=[]
+                        if (ulog.value == currentMoney) {
+                            errorMsg.innerHTML= "Dodajte jos kredita kako bi ste nastavili igru"
+                            errorMsg.style.display = "block";
+                        }
                         
                     }
                 }
@@ -313,7 +328,15 @@ dodajTiket.addEventListener('click', ()=>{
                     invalidBet('Nisu dozvoljeni negativni ulozi')
                     break;   
                 }
+                else if (ulog.value > currentMoney) {
+                    invalidBet('Nemate dovoljno kredita')
+                    break;  
+                }
                 else {
+                    if (ulog.value == 0 && currentMoney > 0) {
+                        invalidBet('Stavite ulog')
+                        break;   
+                    }
                    
                 
                 for  (let i = 0 ; i < izabraniBrojevi.length ; i++) {
@@ -321,6 +344,8 @@ dodajTiket.addEventListener('click', ()=>{
                 }
                 if (arraysMatch(tiket1,tiket3) || arraysMatch(tiket2,tiket3)){
                     errorMsg.innerHTML = "Tiket vec postoji"
+                    errorMsg.style.display = "block";
+
                     tiket3= [];
                     izabraniBrojevi = []
                     return;
@@ -331,14 +356,18 @@ dodajTiket.addEventListener('click', ()=>{
                 }
                 d('tiket3').style.display = "flex"
                 errorMsg.style.display = "none";
-                bet3 = ulog.value;
-                currentMoney = currentMoney - ulog.value; 
+                bet3 = parseInt (ulog.value);
+                currentMoney = currentMoney - bet3 
                 balance.innerHTML = currentMoney;
                 ulog3.innerHTML = bet3;
                 ulogDivovi[2].style.display = "block"
                 ulog.value = ""
                 ticketCounter++
                 izabraniBrojevi=[]
+                if (ulog.value == currentMoney) {
+                    errorMsg.innerHTML= "Dodajte jos kredita kako bi ste nastavili igru"
+                    errorMsg.style.display = "block";
+                }
             }
         }
         break;
@@ -347,13 +376,22 @@ dodajTiket.addEventListener('click', ()=>{
                 invalidBet('Nisu dozvoljeni negativni ulozi')
                 break;   
             }
+            else if (ulog.value > currentMoney) {
+                invalidBet('Nemate dovoljno kredita')
+                break;  
+            }
                 else {
+                    if (ulog.value == 0 && currentMoney > 0) {
+                        invalidBet('Stavite ulog')
+                        break;   
+                    }
                     
                 for  (let i = 0 ; i < izabraniBrojevi.length ; i++) {
                     tiket4.push (izabraniBrojevi[i])
                 }
                 if (arraysMatch(tiket1,tiket4) || arraysMatch(tiket2,tiket4) || arraysMatch(tiket3,tiket4) ){
                     errorMsg.innerHTML = "Tiket vec postoji"
+                    errorMsg.style.display = "block";
                     tiket4= [];
                     izabraniBrojevi = []
                     return;
@@ -364,14 +402,18 @@ dodajTiket.addEventListener('click', ()=>{
                 }
                 d('tiket4').style.display = "flex"
                 errorMsg.style.display = "none";
-                bet4 = ulog.value;
-                currentMoney = currentMoney - ulog.value; 
+                bet4 = parseInt (ulog.value);
+                currentMoney = currentMoney - bet4; 
                 balance.innerHTML = currentMoney;
                 ulog4.innerHTML = bet4;
                 ulogDivovi[3].style.display = "block"
                 ulog.value = ""
                 ticketCounter++
                 izabraniBrojevi=[]
+                if (ulog.value == currentMoney) {
+                    errorMsg.innerHTML= "Dodajte jos kredita kako bi ste nastavili igru"
+                    errorMsg.style.display = "block";
+                }
             }
             }
         break;
@@ -380,14 +422,24 @@ dodajTiket.addEventListener('click', ()=>{
                 invalidBet('Nisu dozvoljeni negativni ulozi')
                 break;   
             }
+            else if (ulog.value > currentMoney) {
+                invalidBet('Nemate dovoljno kredita')
+                break;  
+            }
                 else {
                    
+                    if (ulog.value == 0 && currentMoney > 0) {
+                        invalidBet('Stavite ulog')
+                        break;   
+                    }
    
                 for  (let i = 0 ; i < izabraniBrojevi.length ; i++) {
                     tiket5.push (izabraniBrojevi[i])
                 }
                 if (arraysMatch(tiket1,tiket5) || arraysMatch(tiket2,tiket5) || arraysMatch(tiket3,tiket5) ||arraysMatch(tiket4,tiket5) ){
                     errorMsg.innerHTML = "Tiket vec postoji"
+                    errorMsg.style.display = "block";
+
                     tiket5= [];
                     izabraniBrojevi = []
                     return;
@@ -402,14 +454,17 @@ dodajTiket.addEventListener('click', ()=>{
                 }
                 d('tiket5').style.display = "flex"
                 errorMsg.style.display = "none";
-                bet5 = ulog.value;
-                currentMoney = currentMoney - ulog.value; 
+                bet5 = parseInt (ulog.value);
+                
+                currentMoney = currentMoney - bet5; 
                 balance.innerHTML = currentMoney;
                 ulog5.innerHTML = bet5;
                 ulogDivovi[4].style.display = "block"
                 ulog.value = ""
                 ticketCounter++
                 izabraniBrojevi=[]
+                dodajKredit.disabled =true
+
             }
         }
         break;
@@ -417,7 +472,7 @@ dodajTiket.addEventListener('click', ()=>{
             return;        
 
     }
-    console.log("ticket counter je " + ticketCounter);
+   
  
 });
 
@@ -445,19 +500,19 @@ odigraj.addEventListener ('click' , ()=> {
                         balance.innerHTML = currentMoney;
                     break;
                     case 2:
-                            currentMoney = currentMoney + ( bet2 * 7) 
+                            currentMoney = currentMoney + ( bet1 * 7) 
                             balance.innerHTML = currentMoney;
                     break;
                     case 3:
-                            currentMoney = currentMoney + ( bet3 * 15) 
+                            currentMoney = currentMoney + ( bet1 * 15) 
                             balance.innerHTML = currentMoney;
                     break;
                     case 4:
-                            currentMoney = currentMoney + ( bet4 * 30) 
+                            currentMoney = currentMoney + ( bet1 * 30) 
                             balance.innerHTML = currentMoney;
                     break;
                     case 5:
-                            currentMoney = currentMoney + ( bet5 * 50) 
+                            currentMoney = currentMoney + ( bet1 * 50) 
                             balance.innerHTML = currentMoney;
                     break; 
                     default:
@@ -473,7 +528,7 @@ odigraj.addEventListener ('click' , ()=> {
                 tiketStatus(2, 'dobitniTiket', 'flex' , 'DOBITNI')
                 switch (tiket2.length) {
                     case 1:
-                         currentMoney = currentMoney + ( bet1 * 4) 
+                         currentMoney = currentMoney + ( bet2 * 4) 
                          balance.innerHTML = currentMoney;
                      break;
                      case 2:
@@ -481,15 +536,15 @@ odigraj.addEventListener ('click' , ()=> {
                              balance.innerHTML = currentMoney;
                      break;
                      case 3:
-                             currentMoney = currentMoney + ( bet3 * 15) 
+                             currentMoney = currentMoney + (bet2 * 15) 
                              balance.innerHTML = currentMoney;
                      break;
                      case 4:
-                             currentMoney = currentMoney + ( bet4 * 30) 
+                             currentMoney = currentMoney + (bet2 * 30) 
                              balance.innerHTML = currentMoney;
                      break;
                      case 5:
-                             currentMoney = currentMoney + ( bet5 * 50) 
+                             currentMoney = currentMoney + (bet2* 50) 
                              balance.innerHTML = currentMoney;
                      break; 
                      default:
@@ -504,23 +559,23 @@ odigraj.addEventListener ('click' , ()=> {
                 tiketStatus(3, 'dobitniTiket', 'flex' , 'DOBITNI') 
                 switch (tiket3.length) {
                     case 1:
-                         currentMoney = currentMoney + ( bet1 * 4) 
+                         currentMoney = currentMoney + ( bet3 * 4) 
                          balance.innerHTML = currentMoney;
                      break;
                      case 2:
-                             currentMoney = currentMoney + ( bet2 * 7)
+                             currentMoney = currentMoney + ( bet3 * 7)
                              balance.innerHTML = currentMoney; 
                      break;
                      case 3:
-                             currentMoney = currentMoney + ( bet3 * 15)
+                             currentMoney = currentMoney + (bet3* 15)
                              balance.innerHTML = currentMoney; 
                      break;
                      case 4:
-                             currentMoney = currentMoney + ( bet4 * 30) 
+                             currentMoney = currentMoney + ( bet3 * 30) 
                              balance.innerHTML = currentMoney;
                      break;
                      case 5:
-                             currentMoney = currentMoney + ( bet5 * 50) 
+                             currentMoney = currentMoney + ( bet3 * 50) 
                              balance.innerHTML = currentMoney;
                      break; 
                      default:
@@ -536,15 +591,15 @@ odigraj.addEventListener ('click' , ()=> {
                 
                 switch (tiket4.length) {
                     case 1:
-                         currentMoney = currentMoney + ( bet1 * 4) 
+                         currentMoney = currentMoney + ( bet4 * 4) 
                          balance.innerHTML = currentMoney;
                      break;
                      case 2:
-                             currentMoney = currentMoney + ( bet2 * 7) 
+                             currentMoney = currentMoney + ( bet4 * 7) 
                              balance.innerHTML = currentMoney;
                      break;
                      case 3:
-                             currentMoney = currentMoney + ( bet3 * 15) 
+                             currentMoney = currentMoney + ( bet4 * 15) 
                              balance.innerHTML = currentMoney;
                      break;
                      case 4:
@@ -552,7 +607,7 @@ odigraj.addEventListener ('click' , ()=> {
                              balance.innerHTML = currentMoney;
                      break;
                      case 5:
-                             currentMoney = currentMoney + ( bet5 * 50) 
+                             currentMoney = currentMoney + ( bet4 * 50) 
                              balance.innerHTML = currentMoney;
                      break; 
                      default:
@@ -567,19 +622,19 @@ odigraj.addEventListener ('click' , ()=> {
                 tiketStatus(5, 'dobitniTiket', 'flex' , 'DOBITNI')
                 switch (tiket5.length) {
                     case 1:
-                         currentMoney = currentMoney + ( bet1 * 4) 
+                         currentMoney = currentMoney + ( bet5 * 4) 
                          balance.innerHTML = currentMoney;
                      break;
                      case 2:
-                             currentMoney = currentMoney + ( bet2 * 7) 
+                             currentMoney = currentMoney + (bet5* 7) 
                              balance.innerHTML = currentMoney;
                      break;
                      case 3:
-                             currentMoney = currentMoney + ( bet3 * 15) 
+                             currentMoney = currentMoney + ( bet5* 15) 
                              balance.innerHTML = currentMoney;
                      break;
                      case 4:
-                             currentMoney = currentMoney + ( bet4 * 30) 
+                             currentMoney = currentMoney + (bet5 * 30) 
                              balance.innerHTML = currentMoney;
                      break;
                      case 5:
